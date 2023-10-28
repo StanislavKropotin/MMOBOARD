@@ -1,0 +1,38 @@
+{% extends 'flatpages/articles.html' %}
+
+{% block content %}
+  <p><a href="http://127.0.0.1:8000/articles/">Вернуться ко всем объявлениям</a></p>
+  <hr>
+  <h3>Все отклики на публикации пользователя: {{ user.get_username }}</h3>
+
+  <div>
+    <form method="GET">
+      <select name="responses">
+        <option value="" selected>Все отклики</option>
+        {% for article in articles %}
+          <option value="{{ article.id }}">{{ article.title }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Filter</button>
+    </form>
+  </div>
+
+  <ul>
+    {% for response in responses %}
+        <li>
+          На какого персонажа оставлен отзыв: {{ response.article.title }}
+          <br/>
+          Автор отзыва: {{ response.author }}
+          Текст отзыва: {{ response.text }}
+          <form action="{% url 'delete_response' response.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+          </form>
+          <form action="{% url 'accept_response' response.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Accept</button>
+          </form>
+        </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

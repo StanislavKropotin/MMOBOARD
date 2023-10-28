@@ -1,0 +1,16 @@
+{% extends 'flatpages/articles.html' %}
+{% block content %}
+    <h3 style="text-align: center;"><span style="text-decoration: underline;"><em>Здесь Вы можете отредактировать своё объявление!</em></span></h3>
+    <p><a href="http://127.0.0.1:8000/articles/">Вернуться на главную страницу</a></p>
+    <hr>
+    {% if article.image %}
+        <td><img src="{{ article.image.url }}"></td>
+    {% endif %}
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>{{ article }}</p>
+        {{ form.as_p }}
+        <input type="submit" value="Update" />
+    </form>
+{% endblock content %}

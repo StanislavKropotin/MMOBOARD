@@ -1,0 +1,55 @@
+{% extends 'flatpages/articles.html' %}
+
+{% block title %}
+<h3>Все публикации пользователя: {{ user.get_username }}</h3>
+<div style="text-align: center;"><h3>Вот сколько объявлений Вы уже написали! Нужно ещё одно!</h3></div>
+<div style="text-align: center;"><h3>{{ MyArticles|length }}</h3></div>
+<p><a href="http://127.0.0.1:8000/articles/">Вернуться ко всем объявлениям</a></p>
+<p><a href="http://127.0.0.1:8000/articles/create">Или напишите ещё одно!</a></p>
+{% endblock title %}
+{% block content %}
+    <hr>
+    {% if MyArticles %}
+        <table>
+           <tr>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;">Заголовок объявления</span></strong></div></td>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;">Дата публикации</span></strong></div></td>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;">Текст</span></strong></div></td>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;">Категория</span></strong></div></td>
+           </tr>
+            {% for article in MyArticles %}
+           <tr>
+               <td>
+                   {{ article.title|truncatewords:10 }}
+               </td>
+               <td>{{ article.dateCreation|date:'d M Y' }}</td>
+               <td><div style="text-align: center;"><p><em><a href="{{ link }}{{ article.get_absolute_url }}">{{ article.text|truncatewords:45 }}</a></em></p></div></td>
+               <td>{{ article.category }}</td>
+           </tr>
+            {% endfor %}
+               </table>
+    {% else %}
+       <h2>Вы пока не написали ни одного объявления!</h2>
+    {% endif %}
+<hr>
+<div class="text-center">
+    {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+    <hr>
+</div>
+{% endblock content %}

@@ -1,0 +1,29 @@
+{% extends 'flatpages/articles.html' %}
+{% block title %}
+Отклики на моих персонажей
+{% endblock title %}
+{% block content %}
+<h1><b> Все отклики </b></h1>
+<p><a href="http://127.0.0.1:8000/articles/">Вернуться ко всем объявлениям</a></p>
+<hr>
+<ul>
+    {% for response in responses %}
+        <li>
+          На какого персонажа оставлен отзыв: {{ response.article.title }}
+          <br/>
+          Текст отзыва: {{ response.text }}
+          <form action="{% url 'delete_response' response.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+          </form>
+          <form action="{% url 'accept_response' response.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Accept</button>
+          </form>
+        </li>
+    {% endfor %}
+  </ul>
+
+
+
+{% endblock content %}

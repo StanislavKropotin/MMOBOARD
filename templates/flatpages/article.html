@@ -1,0 +1,47 @@
+{% extends 'flatpages/articles.html' %}
+
+
+{% block title %}
+<h2 style="text-align: left;"><em>MMOFAN</em></h2>Здесь вы можете разместить описание своего персонажа, а так же посмотреть персонажей других игроков!
+<div style="text-align: center;"><h3>{{ time_now|date:'d M Y' }}</h3></div>
+<p><a href="http://127.0.0.1:8000/articles/">Вернуться на главную страницу</a></p>
+<p><a href="http://127.0.0.1:8000/articles/my_responses">Проверьте, есть ли у Вас отзывы</a></p>
+{% endblock title %}
+
+
+{% block content %}
+    <hr>
+    <h5>Заголовок: {{ article.title }}</h5>
+    <h5>Дата публикации: {{ article.dateCreation|date:'d M Y' }}</h5>
+    <h5>Автор: {{ article.author }}</h5>
+    <td>
+    <h5>Категория: {{ article.category }}</h5>
+    {% if user.is_authenticated %}
+        {% if user.id == article.author.id %}
+            <p><em><a href="{% url 'article_update' pk=article.id %}">Можете изменить объявление</a></em></p>
+            <p><em><a href="{% url 'article_delete' pk=article.id %}">Или удалить</a></em></p>
+        {% endif %}
+    {% endif %}
+
+    </td>
+        {% if article %}
+        <hr>
+        {% if article.image %}
+            <img src="{{ article.image.url }}">
+        {% endif %}
+        <table align="center">
+        <tr>
+        <td>{{ article.text }}</td>
+        <td>{{ response.text }}</td>
+        </tr>
+        </table>
+        {% if user.is_authenticated %}
+            {% if user.id != article.author.id %}
+                <div style="text-align: center;"><h4><em><a href="{% url 'response_create' %}">Оставьте отклик!</a></em></h4></div>
+            {% endif %}
+        {% endif %}
+        {% else %}
+            <div style="text-align: center;"><h2>Пока объявлений нет!</h2></div>
+        {% endif %}
+        <hr>
+{% endblock content %}

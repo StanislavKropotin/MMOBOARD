@@ -1,0 +1,81 @@
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+{% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/bower_components/bootstrap/dist/css/bootstrap.min.css' %}" />
+
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/youplay/css/youplay.min.css' %}" />
+{% block title %}
+<h2 style="text-align: left;"><em>MMOFAN</em></h2>Здесь вы можете разместить описание своего персонажа, а так же просмотреть и прокомментировать персонажей других игроков!
+<div style="text-align: right;"><p><strong><em><a href="http://127.0.0.1:8000/accounts/login/">Регистрация</a></em></strong></p></div>
+<h4 style="text-align: left;"><em>Приветствуем тебя {{ user.get_username }}</em></h4>
+<div style="text-align: center;"><h3>{{ time_now|date:'d M Y' }}</h3></div>
+{% endblock title %}
+{% block content %}
+   <div style="text-align: center;"><h3>Объявлений на этой странице:</h3></div>
+   <div style="text-align: center;"><h3>{{ articles|length }}</h3></div>
+   <hr>
+   {% if perms.board.add_article %}
+        <p><strong><em><a href="{% url 'article_create' %}">Поделитесь своим персонажем!</a></em></strong></p>
+        <p><strong><em><a href="http://127.0.0.1:8000/articles/my_articles/">Или посмотрите все свои объявления!</a></em></strong></p>
+        <p><strong><em><a href="http://127.0.0.1:8000/articles/my_responses">Все отклики на Ваших персонажей!</a></em></strong></p>
+        <div style="text-align: center;"><p><strong><em>Чтобы оставить отклик откройте интересующую Вас статью!</em></strong></p></div><hr>
+   {% endif %}
+   {% if articles %}
+       <table align="center">
+           <tr>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;"><em>Автор</em></span></strong></div></td>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;"><em>Дата публикации</em></span></strong></div></td>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;"><em>Категория</em></span></strong></div></td>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;"><em>Аватар</em></span></strong></div></td>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;"><em>Заголовок</em></span></strong></div></td>
+               <td><div style="text-align: center;"><strong><span style="text-decoration: underline;"><em>Текст</em></span></strong></div></td>
+               {% if perms.board.update_article or perms.board.delete_article %}
+                    <td><span style="text-decoration: underline;"><strong>Действия</strong></span></td>
+               {% endif %}
+           </tr>
+           {% for article in articles %}
+           <tr>
+               <td><div style="text-align: center;">{{ article.author }}</div></td>
+               <td><div style="text-align: center;">{{ article.dateCreation|date:'d M Y' }}</div></td>
+               <td><div style="text-align: center;">{{ article.category }}</div></td>
+               {% if article.image %}
+                    <td><img src="{{ article.image.url }}"></td>
+               {% endif %}
+               <td><div style="text-align: center;">{{ article.title|truncatechars:20 }}</div></td>
+               <td><div style="text-align: center;"><p><em><a href="{{ link }}{{ article.get_absolute_url }}">{{ article.text|truncatewords:45 }}</a></em></p></div></td>
+               <td>
+                   {% if user.is_authenticated %}
+                     {% if user.id == article.author.id %}
+                        <p><em><a href="{% url 'article_update' pk=article.id %}">Можете изменить объявление</a></em></p>
+                        <p><em><a href="{% url 'article_delete' pk=article.id %}">Или удалить</a></em></p>
+                    {% endif %}
+                  {% endif %}
+               </td>
+           </tr>
+           {% endfor %}
+       </table>
+   {% else %}
+       <div style="text-align: center;"><h2>Пока объявлений нет!</h2></div>
+   {% endif %}
+    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+   <div class="text-center">
+    {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+    <hr>
+</div>
+{% endblock content %}

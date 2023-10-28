@@ -1,0 +1,10 @@
+{% extends 'flatpages/articles.html' %}
+{% block content %}
+    <h3 style="text-align: center;"><span style="text-decoration: underline;"><em>Оставьте отзыв на интересующего Вас персонажа!</em></span></h3>
+    <hr>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save" />
+    </form>
+{% endblock content %}

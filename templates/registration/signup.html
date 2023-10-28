@@ -1,0 +1,13 @@
+{% extends "flatpages/articles.html" %}
+
+{% block content %}
+<h5>Чтобы получить доступ ко всем функциям сайта, пожалуйста, зарегистрируйтесь:</h5>
+<hr>
+
+<form method="post">
+{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Sing up">
+</form>
+
+{% endblock %}
