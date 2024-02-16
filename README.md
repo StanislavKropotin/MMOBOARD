@@ -1,16 +1,13 @@
 # MMO-Fans
-Ещё один проект на Django. Ресурс для фанатов ролевых игр, где они могут делиться друг с другом персонажами, и писать на них отзывы. Регистрация так же либо через аккаунт Яндекс, или с подтверждением через почту(с помощью пакета django-allauth). Спроектированы модели и свяхи в архитектуре БД.Описаны сигналы.Авторы и администратор может удалять/создавать/редактировать публикации.Обычный пользователь нет. За основу взят Bootstrap - шаблон. 
 
-Что сделать, чтобы работало:
+Another Django project. A resource for role-playing game fans to share characters with each other and write reviews about them. Registration is also either through a Yandex account, or with confirmation via email (using the django-allauth package). Models and connections in the database architecture have been designed. Signals have been described. Authors and administrators can delete/create/edit publications. The average user cannot. The template is based on Bootstrap.
 
-Необходимо установить зависимости (pip install -r requirements.txt)
+What to do to make it work:
 
-Выполнить команду python manage.py runserver
+Dependencies need to be installed (pip install -r requirements.txt)
 
-Перейти по ссылке http://127.0.0.1:8000/articles/
+Run the command python manage.py runserver
 
-Посты и отклики можно создавать прямо через приложение. Достачточно создать суперюзера, или просто пройти регистрацию
+Follow the link http://127.0.0.1:8000/articles/
 
-
-
-
+Posts and responses can be created directly through the application. It is enough to create a superuser, or simply register
